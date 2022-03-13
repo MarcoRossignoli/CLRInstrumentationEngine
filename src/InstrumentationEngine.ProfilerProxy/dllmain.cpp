@@ -120,7 +120,7 @@ namespace ProfilerProxy
 
         DWORD dwAttrib = GetFileAttributes(wszEngineFullPath);
         *pHasProfiler = dwAttrib != INVALID_FILE_ATTRIBUTES &&
-                       !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
+            !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 
         return S_OK;
     }
@@ -209,7 +209,7 @@ namespace ProfilerProxy
             eventLogger.LogError(_T("dllmain::GetLatestVersionFolder - Unable to find a valid versioned folder with profiler"));
             return E_UNEXPECTED;
         }
-        else if(dError > 0 && dError != ERROR_NO_MORE_FILES)
+        else if (dError > 0 && dError != ERROR_NO_MORE_FILES)
         {
             versionFolder.clear();
             return HRESULT_FROM_WIN32(dError);
@@ -317,7 +317,7 @@ namespace ProfilerProxy
      *                 MicrosoftInstrumentationEngine_x64|86.dll
      */
     _Check_return_
-    STDAPI DLLEXPORT(DllGetClassObject, 12)(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_result_maybenull_ PVOID* ppObj)
+        STDAPI DLLEXPORT(DllGetClassObject, 12)(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_result_maybenull_ PVOID* ppObj)
     {
         HRESULT hr = S_OK;
         if (ppObj == nullptr)
@@ -329,7 +329,8 @@ namespace ProfilerProxy
 
 #ifdef DEBUG
         WCHAR wszEnvVar[MAX_PATH];
-        if (GetEnvironmentVariable(_T("MicrosoftInstrumentationEngine_DebugWait"), wszEnvVar, MAX_PATH) > 0)
+        GetEnvironmentVariable(_T("MicrosoftInstrumentationEngine_DebugWait"), wszEnvVar, MAX_PATH);
+        if (wcscmp(wszEnvVar, _T("1")) == 0)
         {
             while (!IsDebuggerPresent())
             {
@@ -373,7 +374,7 @@ namespace ProfilerProxy
     }
 
     __control_entrypoint(DllExport)
-    STDAPI DLLEXPORT(DllCanUnloadNow, 0)(void)
+        STDAPI DLLEXPORT(DllCanUnloadNow, 0)(void)
     {
         HRESULT hr = S_OK;
 
